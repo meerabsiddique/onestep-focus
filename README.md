@@ -6,14 +6,6 @@ A small web app for people who get overwhelmed by big tasks. You type a task, On
 
 No install needed. Open `index.html` in a browser (Chrome or Edge works best for voice features).
 
-Or run a local server:
-
-```
-python3 -m http.server 8000
-```
-
-then visit http://localhost:8000
-
 
 
 ## Features
