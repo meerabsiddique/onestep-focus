@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="One Step turns an overwhelming task into small steps, shown one at a time, with a gentle focus timer and accessibility settings.">
+  <title>One Step – one small step at a time</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main" data-i18n="skip">Skip to main content</a>
+
+  <header class="top">
+    <h1 class="brand">One Step</h1>
+    <button id="settingsBtn" class="btn ghost" type="button" aria-expanded="false" aria-controls="settings" data-i18n="settings">Settings</button>
+  </header>
+
+  <!-- Accessibility settings -->
+  <section id="settings" class="panel" hidden aria-labelledby="settingsTitle">
+    <h2 id="settingsTitle" data-i18n="settings">Settings</h2>
+
+    <div class="grid">
+      <div class="field">
+        <label for="s-lang" data-i18n="language">Language</label>
+        <select id="s-lang" data-setting="lang">
+          <option value="en">English</option>
+          <option value="ur">اردو</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="s-size" data-i18n="textSize">Text size</label>
+        <select id="s-size" data-setting="size">
+          <option value="1" data-i18n="sizeNormal">Normal</option>
+          <option value="1.25" data-i18n="sizeLarge">Large</option>
+          <option value="1.5" data-i18n="sizeXL">Extra large</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="s-font" data-i18n="font">Font</label>
+        <select id="s-font" data-setting="font">
+          <option value="default" data-i18n="fontDefault">Standard</option>
+          <option value="easy" data-i18n="fontEasy">Easy-read (wider spacing)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="s-theme" data-i18n="theme">Colours</label>
+        <select id="s-theme" data-setting="theme">
+          <option value="light" data-i18n="themeLight">Light</option>
+          <option value="dark" data-i18n="themeDark">Dark</option>
+          <option value="contrast" data-i18n="themeContrast">High contrast</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checks">
+      <label class="check"><input type="checkbox" data-setting="spacing"> <span data-i18n="spacing">Extra line spacing</span></label>
+      <label class="check"><input type="checkbox" data-setting="motion"> <span data-i18n="motion">Reduce motion</span></label>
+      <label class="check"><input type="checkbox" data-setting="sound"> <span data-i18n="sound">Soft chime when time is up</span></label>
+      <label class="check"><input type="checkbox" data-setting="autoRead"> <span data-i18n="autoRead">Read each step aloud automatically</span></label>
+    </div>
+
+    <button id="settingsClose" class="btn" type="button" data-i18n="close">Close</button>
+  </section>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 1. Enter a task -->
+    <section id="viewSetup" aria-labelledby="qTitle">
+      <h2 id="qTitle" data-i18n="question">What do you need to get done?</h2>
+      <p class="hint" data-i18n="intro">Type it as messy as you like. We will turn it into small steps and show you only one at a time.</p>
+
+      <form id="taskForm" novalidate>
+        <label for="taskInput" class="label" data-i18n="taskLabel">Your task</label>
+        <div class="row">
+          <input id="taskInput" type="text" autocomplete="off" maxlength="120" data-i18n-ph="placeholder" placeholder="e.g. Finish my assignment">
+          <button id="micBtn" class="btn icon" type="button" data-i18n-aria="mic" aria-label="Speak your task" hidden>🎤</button>
+        </div>
+        <p id="micStatus" class="hint" role="status"></p>
+        <button class="btn primary big" type="submit" data-i18n="go">Break it into steps</button>
+      </form>
+
+      <div class="examples">
+        <p class="hint" data-i18n="tryExample">Or try an example:</p>
+        <div id="exampleList" class="chips"></div>
+      </div>
+    </section>
+
+    <!-- 2. Focus on one step -->
+    <section id="viewFocus" hidden aria-labelledby="stepText">
+      <p class="task-name"><span data-i18n="yourTask">Your task:</span> <strong id="taskTitle"></strong></p>
+      <p id="progressText" class="progress-text"></p>
+      <progress id="progressBar" value="0" max="1" data-i18n-aria="progress" aria-label="Progress"></progress>
+
+      <div class="card">
+        <h2 id="stepText" tabindex="-1"></h2>
+        <p class="hint"><span data-i18n="suggested">Suggested time:</span> <span id="stepMin"></span> <span data-i18n="minutes">min</span></p>
+      </div>
+
+      <div class="timer" role="group" data-i18n-aria="timerLabel" aria-label="Timer">
+        <p id="timerDisplay" class="time" role="timer">00:00</p>
+        <div class="row wrap">
+          <button id="timerToggle" class="btn" type="button" data-i18n="start">Start</button>
+          <button id="timerReset" class="btn ghost" type="button" data-i18n="reset">Reset</button>
+          <button id="timerPlus" class="btn ghost" type="button" data-i18n="plus5">+5 min</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="doneBtn" class="btn primary big" type="button" data-i18n="doneBtn">I did this step</button>
+        <div class="row wrap">
+          <button id="backBtn" class="btn ghost" type="button" data-i18n="back">Back</button>
+          <button id="skipBtn" class="btn ghost" type="button" data-i18n="skipStep">Do this later</button>
+          <button id="readBtn" class="btn ghost" type="button" data-i18n="read">Read aloud</button>
+        </div>
+      </div>
+
+      <details class="all-steps">
+        <summary data-i18n="allSteps">See all steps</summary>
+        <ol id="stepList"></ol>
+        <form id="addForm" class="row" novalidate>
+          <label for="addInput" class="sr-only" data-i18n="addStep">Add a step</label>
+          <input id="addInput" type="text" maxlength="120" data-i18n-ph="addStep" placeholder="Add a step">
+          <button class="btn" type="submit" data-i18n="add">Add</button>
+        </form>
+      </details>
+
+      <button id="newTaskBtn" class="btn ghost" type="button" data-i18n="newTask">Start a new task</button>
+    </section>
+
+    <!-- 3. Finished -->
+    <section id="viewDone" hidden aria-labelledby="doneTitle">
+      <h2 id="doneTitle" tabindex="-1" data-i18n="allDone">Well done! You finished it.</h2>
+      <p data-i18n="allDoneMsg">You got there by taking one small step at a time.</p>
+      <button id="againBtn" class="btn primary big" type="button" data-i18n="newTask">Start a new task</button>
+    </section>
+  </main>
+
+  <!-- Screen-reader announcements -->
+  <div id="announce" class="sr-only" role="status" aria-live="polite"></div>
+
+  <footer class="foot">
+    <p data-i18n="privacy">Everything stays in your browser. Nothing is sent anywhere.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
