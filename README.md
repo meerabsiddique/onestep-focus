@@ -14,11 +14,7 @@ python3 -m http.server 8000
 
 then visit http://localhost:8000
 
-## Put it online (free, for your Devpost link)
 
-1. Create a GitHub repository and upload `index.html`, `style.css`, `app.js` and this README.
-2. In the repo go to **Settings → Pages**, choose the `main` branch and the root folder, and save.
-3. After a minute your site is live at `https://<your-username>.github.io/<repo-name>/`.
 
 ## Features
 
